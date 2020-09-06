@@ -230,7 +230,6 @@ namespace MemoryAccess
             return bytesWritten == IntPtr.Zero ? false : true;
         }
 
-
         private static byte[] ConvertPatternToBytes(String pattern)
         {
             String[] patternBytes = pattern.Split(' ');
@@ -241,6 +240,5 @@ namespace MemoryAccess
             }
             return convertertedArray;
         }
-
     }
 }
