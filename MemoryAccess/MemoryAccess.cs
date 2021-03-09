@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace MemoryAccess
 {
@@ -175,9 +176,9 @@ namespace MemoryAccess
         }
 
         /// <summary>
-        /// Return the address value(int)
+        /// Return the Integer
         /// </summary>
-        public static int GetAddressIntegerValue(IntPtr handleProcess, IntPtr address, int bufferLength)
+        public static int GetInteger(IntPtr handleProcess, IntPtr address, int bufferLength)
         {
             byte[] buffer = new byte[bufferLength];
             MemoryAccessAPI.ReadProcessMemory(handleProcess, address, buffer, bufferLength, out var read);
@@ -185,9 +186,19 @@ namespace MemoryAccess
         }
 
         /// <summary>
-        /// Return the address value(bytes)
+        /// Return the String
         /// </summary>
-        public static byte[] GetAddressBytesValue(IntPtr handleProcess, IntPtr address, int bufferLength)
+        public static String GetString(IntPtr handleProcess, IntPtr address, int bufferLength)
+        {
+            byte[] buffer = new byte[bufferLength];
+            MemoryAccessAPI.ReadProcessMemory(handleProcess, address, buffer, bufferLength, out var read);
+            return Encoding.Unicode.GetString(buffer, 0, buffer.Length);
+        }
+
+        /// <summary>
+        /// Return the Bytes
+        /// </summary>
+        public static byte[] GetBytes(IntPtr handleProcess, IntPtr address, int bufferLength)
         {
             byte[] buffer = new byte[bufferLength];
             MemoryAccessAPI.ReadProcessMemory(handleProcess, address, buffer, bufferLength, out var read);
@@ -205,7 +216,7 @@ namespace MemoryAccess
                 bool found = true;
                 for (int j = 0; j < convertedByteArray.Length && i + j < modulebytes.Length; j++)
                 {
-                    if (convertedByteArray[j] == 0x0)
+                    if (pattern.Contains("??") && convertedByteArray[j] == 0x0)
                     {
                         continue;
                     }
